@@ -29,6 +29,7 @@ nnoremap("&", function() require("harpoon.ui").nav_file(1) end, silent)
 nnoremap("é", function() require("harpoon.ui").nav_file(2) end, silent)
 nnoremap("\"", function() require("harpoon.ui").nav_file(3) end, silent)
 nnoremap("\'", function() require("harpoon.ui").nav_file(4) end, silent)
+nnoremap("(", function() require("harpoon.ui").nav_file(5) end, silent)
 
 nnoremap("<a-h>", function() require("harpoon.ui").nav_file(1) end, silent)
 nnoremap("<a-j>", function() require("harpoon.ui").nav_file(2) end, silent)

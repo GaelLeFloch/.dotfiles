@@ -116,10 +116,10 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
+        { name = 'luasnip' }, -- For luasnip users.
         { name = 'cmp_tabnine' },
         { name = 'nvim_lsp' },
         -- { name = 'vsnip' }, -- For vsnip users.
-        { name = 'luasnip' }, -- For luasnip users.
         -- { name = 'ultisnips' }, -- For ultisnips users.
         -- { name = 'snippy' }, -- For snippy users.
     }, {
@@ -201,6 +201,12 @@ require'lspconfig'.tsserver.setup{
 --   },
 -- }
 --
+
+require'lspconfig'.rust_analyzer.setup({
+  on_attach=on_attach,
+  capabilities = capabilities,
+})
+
 --Enable (broadcasting) snippet capability for completion
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -210,4 +216,7 @@ require'lspconfig'.cssls.setup {
   capabilities = capabilities,
 }
 
-require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_vscode").lazy_load({
+	include = nil, -- Load all languages
+	exclude = {'javascript'},
+})
