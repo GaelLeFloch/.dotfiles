@@ -1,0 +1,156 @@
+#!/bin/bash
+
+__slouch_fzf() {
+    mode=$1
+    shift
+    # shellcheck disable=2068
+    /home/gael/.fzf/bin/fzf +m --layout=reverse --margin=10% --prompt="" \
+        --color=prompt:7,pointer:7,spinner:0,info:0,hl:2,hl+:2,marker:0 $@
+}
+
+__slouch_pdetach() {
+    # shellcheck disable=2068
+    nohup $@ > /dev/null 2> /dev/null &
+    sleep 0.1 # don't question this hack
+}
+
+# __slouch_term() {
+    # shellcheck disable=2068
+    # st -t 'slouch' -a -g "80x20+570+300" -e "$0" $@
+# }
+
+__slouch_window_ids() {
+    IFS=', '
+    for wid in $(xprop -root | grep '^_NET_CLIENT_LIST(WINDOW)' | cut -d ' ' -f5-); do
+        name=$(xwininfo -id "$wid" -wm | grep '^xwininfo:' | cut -d ' ' -f5-)
+        name="${name:1:-1}"
+        [ "$name" != 'slouch' ] && echo -e "$wid\t$name"
+    done
+}
+
+__slouch_focus() {
+    # herbstclient jumpto "$1"
+    # herbstclient raise "$1"
+	i3-msg "[id=\"$1\"] focus" # i3
+}
+
+__slouch_freedesktop_entries() {
+    files=$(find /usr/share/applications/ -maxdepth 1 -type f -name '*.desktop' | sort)
+    sum=$(echo "$files" | sha1sum | cut -d ' ' -f1)
+    tmp="/tmp/slouch.drun.$sum"
+    if [ -e "$tmp" ]; then
+        cat "$tmp" && exit
+    fi
+    for file in $files; do
+        name=''
+        path=''
+        term=''
+        exec=''
+        hide=''
+        while IFS= read -r line; do
+            case "$line" in
+                Name=*) [ ! "$name" ] && name=$(echo "$line" | cut -d '=' -f2-) ;;
+                Path=*) [ ! "$path" ] && path=$(echo "$line" | cut -d '=' -f2-) ;;
+                Exec=*) [ ! "$exec" ] && exec=$(echo "$line" | cut -d '=' -f2- | grep -v '%[UuFf]') ;;
+                Terminal=true) term='y' ;;
+                Type=Link)              ;&
+                Type=Directory)         ;&
+                NoDisplay=true)         ;&
+                NotShowIn=*)   hide='y' ;;
+            esac
+        done < "$file"
+        [ ! "$hide" ] && [ "$name" ] && [ "$exec" ] \
+            && echo -e "${term}\t${exec}\t${path}\t${name}"
+    done | tee "$tmp"
+}
+
+# __slouch_drun() {
+    # if [ "$1" ]; then
+        # __slouch_pdetach st -e "$2"
+    # else
+        # __slouch_pdetach "$2"
+    # fi
+# }
+
+__slouch_term() {
+    urxvt -name slouch -geometry 80x20+570+300 -e $0 $@
+}
+
+__slouch_drun() {
+    if [ "$1" ]; then
+        __slouch_pdetach urxvt -e "$2"
+    else
+        __slouch_pdetach "$2"
+    fi
+}
+
+# shellcheck source=/dev/null
+. ~/.config/slouch/hooks
+
+case "$1" in
+    _drun)
+        if choice=$(__slouch_freedesktop_entries | __slouch_fzf drun -d'\t' --with-nth=4); then
+            term=$(echo "$choice" | cut -d$'\t' -f1)
+            exec=$(echo "$choice" | cut -d$'\t' -f2)
+            path=$(echo "$choice" | cut -d$'\t' -f3)
+            [ "$path" ] && (cd "$path" || exit)
+            __slouch_drun "$term" "$exec"
+        fi
+        ;;
+    _run)
+        IFS=':'
+        # shellcheck disable=2086
+        choice=$(find $PATH -type f,l -executable -printf '%f\n' | grep -v '^\[$' | sort | __slouch_fzf run) \
+            && __slouch_pdetach "$choice"
+        ;;
+    _filter)
+
+		choice=$(find . -type d \( -path ./nltk_data \
+			-o -path ./anaconda3 \
+			-o -path ./snap \
+			-o -path ./.vscode \
+			-o -path ./.cache \
+			-o -path ./.local/lib/python2.7 \
+			-o -path ./IdeaProjects \
+			-o -path ./.local/share \
+			-o -path ./R \
+			-o -path ./.npm \
+			-o -path ./.m2 \
+			-o -path ./.IdeaIC2018.2 \
+			-o -path ./.TinyTeX \
+			-o -path ./.config/google-chrome \
+			-o -path ./.config/Code \
+			-o -path ./.dbus \
+			-o -path ./node_modules \) -prune -o -print | sed "s|^$HOME|~|" | __slouch_fzf filter) \
+            && __slouch_pdetach xdg-open "$HOME${choice:1}"
+        # choice=$(find ~ -name '.*' -prune -o -print | sed "s|^$HOME|~|" | __slouch_fzf filter) \
+            # && __slouch_pdetach xdg-open "$HOME${choice:1}"
+        ;;
+    _window)
+        wid=$(__slouch_window_ids | __slouch_fzf window -d'\t' --with-nth=2 | cut -d$'\t' -f1) \
+            && __slouch_focus "$wid"
+        ;;
+    _pipe)  __slouch_fzf "$2" > "$3" < "$4" ;;
+    run)    __slouch_term _run    ;;
+    drun)   __slouch_term _drun   ;;
+    filter) __slouch_term _filter ;;
+    window) __slouch_term _window ;;
+    pipe)
+        custom_mode="$2"
+        [ -z "$custom_mode" ] && custom_mode="pipe"
+        in=$(mktemp -u)
+        out=$(mktemp -u)
+        mkfifo "$in"
+        mkfifo "$out"
+        __slouch_term _pipe "$custom_mode" "$out" "$in" 2> /dev/null &
+        cat > "$in" &
+        cat "$out"
+        rm "$in" "$out"
+        ;;
+    ""|-h|--help)
+        echo 'usage:'
+        echo '  slouch run | drun | filter | window'
+        echo '  slouch pipe [<text>]'
+        echo '  slouch -h | --help'
+        ;;
+esac
