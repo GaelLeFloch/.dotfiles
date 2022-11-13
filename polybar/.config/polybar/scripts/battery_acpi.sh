@@ -6,7 +6,7 @@
 BATTERY_INFO=($( acpi | awk -F',' '{ print $0 }'))
 
 # Formatting helpers
-CHARGE=$((${BATTERY_INFO[3]//%,}))
+CHARGE=($( echo ${BATTERY_INFO[3]} | sed 's/,//g' | sed 's/[,%]//g' ))
 ICON=""
 FORMAT=""
 
@@ -26,7 +26,7 @@ elif [[ $CHARGE -lt 40 ]]; then
     FORMAT="%{F#f00}  "
 # elif [[ $CHARGE -lt 60 ]]; then
 #     FORMAT="%{B#18181}%{B#8c0a0a0a}  "
-elif [[ $CHARGE -lt 100 ]]; then
+elif [[ $CHARGE -le 100 ]]; then
     FORMAT=" "
 fi
 
