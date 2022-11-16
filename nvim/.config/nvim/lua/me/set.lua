@@ -1,6 +1,6 @@
 -- vim.opt.guicursor = ""
-vim.opt.foldmethod = "indent"
-vim.opt.foldlevel = 99
+-- vim.g.markdown_folding = 1
+vim.opt.conceallevel = 1
 
 vim.opt.backupcopy = "yes"
 
@@ -47,3 +47,9 @@ vim.opt.shortmess:append("c")
 vim.opt.colorcolumn = "80"
 
 vim.g.mapleader = " "
+
+vim.api.nvim_create_autocmd('BufWritePre,FileWritePre', {     -- Before saving
+  pattern = '*',                                              -- on all the files
+  desc = 'mkdir if doesn\'t exist on save',
+  command = "silent! call mkdir(expand('<afile>:p:h'), 'p')"  -- command to execute
+})
