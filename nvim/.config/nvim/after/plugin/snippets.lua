@@ -12,7 +12,7 @@ ls.add_snippets(nil, {
     javascript = {
         snip("cl", {
             text "console.log(",
-            insert(1),
+            insert(0),
             text ");",
         }),
     },
