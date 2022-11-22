@@ -5,7 +5,9 @@
 
 alias o='xdg-open'
 alias v='fzf | xargs -r vi'
-alias chrome_update='./.config/script/update_chrome.sh'
+alias dot='cd $HOME/.dotfiles'
+alias chrome_update='$HOME/.config/script/update_chrome.sh'
+alias d='f() { cd $HOME/.dotfiles/$1 };f'
 
 export PATH="/home/gael/usr/bin:${PATH}"
 
@@ -131,6 +133,7 @@ export FZF_DEFAULT_COMMAND="""find . -type d \( -path ./nltk_data \
 
 # To apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
 # export FZF_ALT_C_COMMAND="find / -type d 2>/dev/null"
 
 fzf-vi-widget() {eval ${FZF_DEFAULT_COMMAND} | fzf | xargs -r vi }
