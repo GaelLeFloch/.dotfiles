@@ -26,7 +26,7 @@ local on_attach = function(_, bufnr)
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-    nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+    -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
     -- Lesser used LSP functionality
     nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -102,29 +102,28 @@ cmp.setup({
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        ["<Tab>"] = cmp.mapping(function(fallback)         -- https://github.com/neovim/nvim-lspconfig/wiki/Snippets
-            if luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-            elseif cmp.visible() then
-                cmp.select_next_item()
-            elseif has_words_before() then
-                cmp.complete()
-            else
-                fallback()
-            end
-        end, { "i", "s" }),
+        ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        -- ["<Tab>"] = cmp.mapping(function(fallback)         -- https://github.com/neovim/nvim-lspconfig/wiki/Snippets
+        --     if cmp.visible() then
+        --         cmp.select_next_item()
+        --     elseif luasnip.expand_or_jumpable() then
+        --         luasnip.expand_or_jump()
+        --     elseif has_words_before() then
+        --         cmp.complete()
+        --     else
+        --         fallback()
+        --     end
+        -- end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
         { name = 'luasnip' }, -- For luasnip users.
-        { name = 'cmp_tabnine' },
-        { name = 'nvim_lsp' },
+        -- { name = 'cmp_tabnine' },
+        { name = 'nvim_lsp', keyword_length = 4 },
+        { name = 'buffer' },
         -- { name = 'vsnip' }, -- For vsnip users.
         -- { name = 'ultisnips' }, -- For ultisnips users.
         -- { name = 'snippy' }, -- For snippy users.
-    }, {
-            { name = 'buffer' },
-        })
+    }), -- sort snippet https://www.reddit.com/r/neovim/comments/woih9n/how_to_set_lsp_autocomplete_priority/
 })
 
 local tabnine = require("cmp_tabnine.config")
@@ -134,6 +133,7 @@ tabnine:setup({
 	sort = true,
 	run_on_every_keystroke = true,
 	snippet_placeholder = "..",
+    show_prediction_strength = true
 })
 
 -- Set configuration for specific filetype.
@@ -175,6 +175,7 @@ require'lspconfig'.pyright.setup{
 require'lspconfig'.tsserver.setup{
     on_attach=on_attach,
     capabilities=capabilities,
+    flags = {allow_incremental_sync = true, debounce_text_changes = 500},
     -- cmd = {'typescript-language-server', '--stdio'}
 }
 
@@ -207,6 +208,20 @@ require'lspconfig'.rust_analyzer.setup({
   capabilities = capabilities,
 })
 
+local lspconfig = require('lspconfig')
+lspconfig.gopls.setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    settings = {
+        gopls = {
+            gofumpt = true,
+        },
+    },
+    flags = {
+        debounce_text_changes = 150,
+    },
+}
+
 --Enable (broadcasting) snippet capability for completion
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -216,7 +231,26 @@ require'lspconfig'.cssls.setup {
   capabilities = capabilities,
 }
 
+require'lspconfig'.marksman.setup{
+    on_attach=on_attach,
+    capabilities = capabilities,
+}
+
+-- require'lspconfig'.emmet_ls.setup({
+--     -- on_attach = on_attach,
+--     capabilities = capabilities,
+--     filetypes = { 'html', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less' },
+--     init_options = {
+--       html = {
+--         options = {
+--           -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
+--           ["bem.enabled"] = true,
+--         },
+--       },
+--     }
+-- })
+
 require("luasnip.loaders.from_vscode").lazy_load({
 	include = nil, -- Load all languages
-	exclude = {'javascript'},
+	exclude = {'javascript', 'html'},
 })

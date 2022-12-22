@@ -10,6 +10,7 @@ alias chrome_update='$HOME/.config/script/update_chrome.sh'
 alias d='f() { cd $HOME/.dotfiles/$1 };f'
 
 export PATH="/home/gael/usr/bin:${PATH}"
+export PATH=$PATH:/usr/local/go/bin:/home/gael/go/bin
 
 export EDITOR=vim
 export VISUAL=vim

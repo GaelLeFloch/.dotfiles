@@ -16,7 +16,9 @@ return require('packer').startup(function(use)
       -- end
   }
   use "lunarvim/colorschemes"
-
+  use 'christoomey/vim-tmux-navigator'
+  use "mbbill/undotree"
+  use "mattn/emmet-vim"
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
@@ -49,4 +51,5 @@ return require('packer').startup(function(use)
 
   use 'kdheepak/lazygit.nvim'
   use 'lewis6991/gitsigns.nvim'
+  use 'ap/vim-css-color' 
 end)

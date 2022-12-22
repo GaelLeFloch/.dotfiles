@@ -15,5 +15,22 @@ ls.add_snippets(nil, {
             insert(0),
             text ");",
         }),
+        snip("af", {
+            text "() => {",
+            insert(0),
+            text "}",
+        }),
+    },
+    typescriptreact = {
+        snip("cl", {
+            text "console.log(",
+            insert(0),
+            text ");",
+        }),
+        snip("af", {
+            text "() => {",
+            insert(0),
+            text "}",
+        }),
     },
 })
