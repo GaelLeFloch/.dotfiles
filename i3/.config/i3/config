@@ -235,9 +235,9 @@ exec --no-startup-id alacritty --class=dropdown -e sh -c "tmux attach -t dd || t
 bindsym Home [instance="dropdown"] scratchpad show; move position center
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 1 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 1 -5% #decrease sound volume
+bindsym XF86AudioMute exec pactl set-sink-mute 1 toggle # mute sound
 
 # Sreen brightness controls
 # sudo chmod 766 /sys/class/backlight/intel_backlight/brightness
