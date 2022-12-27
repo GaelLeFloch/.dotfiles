@@ -73,12 +73,12 @@ __slouch_freedesktop_entries() {
 # }
 
 __slouch_term() {
-    urxvt -name slouch -geometry 80x20+570+300 -e $0 $@
+    alacritty --class slouch -e $0 $@
 }
 
 __slouch_drun() {
     if [ "$1" ]; then
-        __slouch_pdetach urxvt -e "$2"
+        __slouch_pdetach alacritty -e "$2"
     else
         __slouch_pdetach "$2"
     fi
@@ -107,6 +107,9 @@ case "$1" in
 
 		choice=$(find . -type d \( -path ./nltk_data \
 			-o -path ./anaconda3 \
+			-o -path ./.fonts \
+			-o -path ./.vim \
+			-o -path ./.gconf \
 			-o -path ./snap \
 			-o -path ./.vscode \
 			-o -path ./.cache \
