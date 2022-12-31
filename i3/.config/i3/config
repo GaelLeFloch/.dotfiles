@@ -249,17 +249,11 @@ bindsym Ctrl+Up exec playerctl -p spotify play-pause
 bindsym Ctrl+Next exec playerctl -p spotify next
 bindsym Ctrl+Prior exec playerctl -p spotify previous
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# Launch polybar each i3 restart
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
-# Set up Screen
-# exec --no-startup-id "sh -c 'sleep 9; exec x-window-manager'"
-
-# exec --no-startup-id "sh -c 'sleep 1; exec $HOME/.config/polybar/launch.sh'"
-
-# exec_always --no-startup-id xmodmap -e "clear lock" #disable caps lock switch
-# exec_always --no-startup-id xmodmap -e "keysym Caps_Lock = Escape" #set caps_lock as escape
+# On Start
+exec --no-startup-id ~/.dropbox-dist/dropboxd
 exec --no-startup-id setxkbmap -option caps:escape
 exec --no-startup-id sleep 5;autorandr --change
 
