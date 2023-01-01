@@ -207,6 +207,10 @@ exec --no-startup-id google-chrome --incognito
 assign [class="(?i)chrome"] $workspace1
 
 # Put Spotify in the 6th workspace
+# How to find the class & instance name:
+# - execute xprop in a terminal
+# - click on the app you want the class/instance of
+# - WM_CLASS(STRING) = ${instance}, ${class}
 exec --no-startup-id spotify
 for_window [class="(?i)spotify"] move to workspace $workspace6
 bindsym $mod+m [class="(?i)spotify"] focus
@@ -228,7 +232,7 @@ for_window [instance="dropdown"] move scratchpad
 for_window [instance="dropdown"] sticky disable
 # for_window [instance="dropdown_*"] scratchpad show
 for_window [instance="dropdown"] resize set 1250 700
-for_window [instance="dropdown"] border pixel 3
+for_window [instance="dropdown"] border pixel 1
 for_window [instance="dropdown"] move position center
 exec --no-startup-id alacritty --class=dropdown -e sh -c "tmux attach -t dd || tmux new -s dd"
 
