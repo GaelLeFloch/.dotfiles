@@ -115,7 +115,7 @@ bindkey '^ ' autosuggest-accept
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Setting fd as the default source for fzf
 export FZF_DEFAULT_COMMAND="""find . -type d \( -path ./nltk_data \
-	-o -path ./anaconda3 \
+	-o -path ./miniconda3 \
 	-o -path ./snap \
 	-o -path ./.vscode \
 	-o -path ./.cache \
@@ -130,6 +130,12 @@ export FZF_DEFAULT_COMMAND="""find . -type d \( -path ./nltk_data \
 	-o -path ./.config/google-chrome \
 	-o -path ./.config/Code \
 	-o -path ./.dbus \
+	-o -path ./.vim \
+	-o -path ./.fonts \
+	-o -path ./go \
+	-o -path ./.bun \
+	-o -path ./.config \
+	-o -path ./Dendron-Tutorial \
 	-o -path ./node_modules \) -prune -o -print"""
 
 # To apply the command to CTRL-T as well
@@ -141,19 +147,26 @@ fzf-vi-widget() {eval ${FZF_DEFAULT_COMMAND} | fzf | xargs -r vi }
 
 zle     -N    fzf-vi-widget
 bindkey '\ev' fzf-vi-widget
-# export PATH="/home/gael/anaconda3/bin:$PATH"  # commented out by conda initialize
+export PATH="/home/gael/anaconda3/bin:$PATH"
 
+
+# bun completions
+[ -s "/home/gael/.bun/_bun" ] && source "/home/gael/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/gael/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/gael/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/gael/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/gael/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/gael/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/gael/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/gael/anaconda3/bin:$PATH"
+        export PATH="/home/gael/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup

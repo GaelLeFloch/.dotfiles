@@ -118,7 +118,7 @@ cmp.setup({
     sources = cmp.config.sources({
         { name = 'luasnip' }, -- For luasnip users.
         -- { name = 'cmp_tabnine' },
-        { name = 'nvim_lsp', keyword_length = 4 },
+        { name = 'nvim_lsp', keyword_length = 2 },
         { name = 'buffer' },
         -- { name = 'vsnip' }, -- For vsnip users.
         -- { name = 'ultisnips' }, -- For ultisnips users.
@@ -126,15 +126,15 @@ cmp.setup({
     }), -- sort snippet https://www.reddit.com/r/neovim/comments/woih9n/how_to_set_lsp_autocomplete_priority/
 })
 
-local tabnine = require("cmp_tabnine.config")
-tabnine:setup({
-	max_lines = 1000,
-	max_num_results = 20,
-	sort = true,
-	run_on_every_keystroke = true,
-	snippet_placeholder = "..",
-    show_prediction_strength = true
-})
+-- local tabnine = require("cmp_tabnine.config")
+-- tabnine:setup({
+-- 	max_lines = 1000,
+-- 	max_num_results = 20,
+-- 	sort = true,
+-- 	run_on_every_keystroke = true,
+-- 	snippet_placeholder = "..",
+--     show_prediction_strength = true
+-- })
 
 -- Set configuration for specific filetype.
 cmp.setup.filetype('gitcommit', {

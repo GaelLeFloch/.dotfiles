@@ -36,13 +36,16 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-cmdline'
   use 'hrsh7th/nvim-cmp'
+  use 'jose-elias-alvarez/null-ls.nvim'
   use {
   	"windwp/nvim-autopairs",
       config = function() require("nvim-autopairs").setup {} end
   }
-  use {'tzachar/cmp-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-cmp'}
+  -- use {'tzachar/cmp-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-cmp'}
 
+  use 'nvim-lua/plenary.nvim'
   use 'ThePrimeagen/harpoon'
+  use 'ThePrimeagen/git-worktree.nvim'
 
   -- For vsnip users.
   use "L3MON4D3/LuaSnip"

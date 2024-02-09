@@ -239,8 +239,8 @@ exec --no-startup-id alacritty --class=dropdown -e sh -c "tmux attach -t dd || t
 bindsym Home [instance="dropdown"] scratchpad show; move position center
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 1 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 1 -5% #decrease sound volume
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 23 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 23 -5% #decrease sound volume
 bindsym XF86AudioMute exec pactl set-sink-mute 1 toggle # mute sound
 
 # Sreen brightness controls
@@ -261,4 +261,5 @@ exec --no-startup-id ~/.dropbox-dist/dropboxd
 exec --no-startup-id setxkbmap -option caps:escape
 exec --no-startup-id sleep 5;autorandr --change
 
+# libinput Accel Speed Default (348):     0.000000
 exec xinput --set-prop 13 348 0.4
