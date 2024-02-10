@@ -1,0 +1,28 @@
+[user]
+	email = gael.lefloch24@gmail.com
+	name = GaelLeFloch
+[credential]
+	helper = store
+
+[core]
+	pager = less -iXFR
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+
+[delta]
+    features = decorations
+    navigate = true
+    side-by-side = true
+
+[diff]
+    colorMoved = default
+
+[delta "interactive"]
+    keep-plus-minus-markers = false
+
+[alias]
+    ls = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+    wa = worktree add
+    wl = worktree list
+    wr = worktree remove
