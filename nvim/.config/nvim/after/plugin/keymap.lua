@@ -27,6 +27,8 @@ nnoremap('<leader>gs', ':Gitsigns stage_hunk <CR>', {noremap = true, silent=true
 nnoremap('<leader>gh', ':Gitsigns preview_hunk <CR>', {noremap = true, silent=true})
 nnoremap('<esc>', ':nohlsearch <CR>', {noremap = true, silent=true})
 nnoremap('<leader>u', ':UndotreeToggle<CR>', {noremap = true, silent=true})
+nnoremap('<leader>gc', ":lua require('telescope').extensions.git_worktree.git_worktrees() <CR>", {noremap = true, silent=true})
+nnoremap('<leader>gb', ":lua require('telescope').extensions.git_worktree.create_git_worktree() <CR>", {noremap = true, silent=true})
 
 -- Harpoon
 nnoremap("<leader>a", function() require("harpoon.mark").add_file() end, silent)
