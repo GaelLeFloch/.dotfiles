@@ -55,3 +55,9 @@ vim.api.nvim_create_autocmd({'BufWritePre', 'FileWritePre'}, {     -- Before sav
   desc = 'mkdir if doesn\'t exist on save',
   command = "silent! call mkdir(expand('<afile>:p:h'), 'p')"  -- command to execute
 })
+
+vim.filetype.add({
+    extension = {
+        templ = "templ",
+    },
+})
