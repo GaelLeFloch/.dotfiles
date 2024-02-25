@@ -3,19 +3,7 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
-  use 'folke/tokyonight.nvim'
   use 'Mofiqul/vscode.nvim'
-  use {
-      "catppuccin/nvim"
-      -- as = "catppuccin",
-      -- config = function()
-      --     require("catppuccin").setup {
-      --         flavour = "macchiato" -- mocha, macchiato, frappe, latte
-      --     }
-          -- vim.api.nvim_command "colorscheme catppuccin"
-      -- end
-  }
-  use "lunarvim/colorschemes"
   use 'christoomey/vim-tmux-navigator'
   use "mbbill/undotree"
   use "mattn/emmet-vim"
@@ -23,7 +11,7 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
-  use {'nvim-telescope/telescope.nvim', tag = '0.1.0',
+  use {'nvim-telescope/telescope.nvim', tag = '0.1.5',
   -- or                            , branch = '0.1.x',
   requires = { {'nvim-lua/plenary.nvim'} }
   }
