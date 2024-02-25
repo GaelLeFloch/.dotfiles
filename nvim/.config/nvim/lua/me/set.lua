@@ -56,6 +56,9 @@ vim.api.nvim_create_autocmd({'BufWritePre', 'FileWritePre'}, {     -- Before sav
   command = "silent! call mkdir(expand('<afile>:p:h'), 'p')"  -- command to execute
 })
 
+-- dadbod ui
+vim.g.db_ui_win_position = "right"
+
 vim.filetype.add({
     extension = {
         templ = "templ",
