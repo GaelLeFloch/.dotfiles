@@ -30,6 +30,7 @@ local on_attach = function(_, bufnr)
 
     -- Lesser used LSP functionality
     nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+    nmap('<leader>de', vim.diagnostic.open_float, 'Get [d]iagnostic')
     nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
     nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
     nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
@@ -145,6 +146,14 @@ cmp.setup.filetype('gitcommit', {
         })
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'sql', 'mysql', 'plsql' },
+  callback = function()
+    cmp.setup.buffer({ sources = { { name = 'vim-dadbod-completion' } } })
+  end,
+  group = autocomplete_group,
+})
+
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline({ '/', '?' }, {
     mapping = cmp.mapping.preset.cmdline(),
@@ -252,5 +261,14 @@ require'lspconfig'.marksman.setup{
 
 require("luasnip.loaders.from_vscode").lazy_load({
 	include = nil, -- Load all languages
-	exclude = {'javascript', 'html'},
+	exclude = {'javascript', 'html', 'python'},
+})
+
+local null_ls = require("null-ls")
+
+null_ls.setup({
+    sources = {
+        null_ls.builtins.diagnostics.eslint,
+        null_ls.builtins.formatting.prettier,
+    },
 })

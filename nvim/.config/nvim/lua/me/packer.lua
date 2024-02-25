@@ -55,4 +55,30 @@ return require('packer').startup(function(use)
   use 'kdheepak/lazygit.nvim'
   use 'lewis6991/gitsigns.nvim'
   use 'ap/vim-css-color' 
+
+  use {
+      "tpope/vim-dadbod",
+      requires = { 
+       "kristijanhusak/vim-dadbod-ui",  
+       "kristijanhusak/vim-dadbod-completion" 
+      },
+      config = function()
+        require("config.dadbod").setup()
+      end,
+  }
+  -- use { 'tpope/vim-dadbod', lazy = true }
+  -- use { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }
+  -- use {
+  --     'kristijanhusak/vim-dadbod-ui',
+  --     cmd = {
+  --       'DBUI',
+  --       'DBUIToggle',
+  --       'DBUIAddConnection',
+  --       'DBUIFindBuffer',
+  --     },
+  --     init = function()
+  --       -- Your DBUI configuration
+  --       vim.g.db_ui_use_nerd_fonts = 1
+  --     end,
+  -- }
 end)
