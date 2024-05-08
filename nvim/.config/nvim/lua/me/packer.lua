@@ -5,6 +5,7 @@ return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use 'Mofiqul/vscode.nvim'
   use 'christoomey/vim-tmux-navigator'
+  use 'jpalardy/vim-slime'
   use "mbbill/undotree"
   use "mattn/emmet-vim"
   use {
@@ -15,6 +16,7 @@ return require('packer').startup(function(use)
   -- or                            , branch = '0.1.x',
   requires = { {'nvim-lua/plenary.nvim'} }
   }
+  use "nvim-telescope/telescope-file-browser.nvim"
   use 'numToStr/Comment.nvim'                                                          -- "gc" to comment visual regions/lines
   use { 'nvim-treesitter/nvim-treesitter-textobjects', after = { 'nvim-treesitter' } } -- Additional textobjects for treesitter
 
@@ -54,6 +56,7 @@ return require('packer').startup(function(use)
         require("config.dadbod").setup()
       end,
   }
+  use {'darrikonn/vim-gofmt', run=':GoUpdateBinaries'}
   -- use { 'tpope/vim-dadbod', lazy = true }
   -- use { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }
   -- use {

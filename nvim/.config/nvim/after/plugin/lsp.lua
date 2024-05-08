@@ -15,7 +15,7 @@ local on_attach = function(_, bufnr)
         vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
     end
 
-    -- nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+    nmap('<leader>n', vim.lsp.buf.rename, '[R]e[n]ame')
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
     nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
@@ -26,11 +26,12 @@ local on_attach = function(_, bufnr)
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-    -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+    nmap('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
 
     -- Lesser used LSP functionality
     nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
     nmap('<leader>de', vim.diagnostic.open_float, 'Get [d]iagnostic')
+    nmap('<leader>dn', vim.diagnostic.goto_next, 'Get [d]iagnostic')
     nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
     nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
     nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
@@ -94,17 +95,21 @@ cmp.setup({
             -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
         end,
     },
+    completion = { completeopt = "menu,menuone,noselect,noinsert" },
+    preselect = cmp.PreselectMode.None,
     window = {
         -- completion = cmp.config.window.bordered(),
         -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
+        ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+        ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.abort(),
         ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        -- ["<Tab>"] = cmp.mapping(function(fallback)         -- https://github.com/neovim/nvim-lspconfig/wiki/Snippets
+         -- ["<Tab>"] = cmp.mapping(function(fallback)         -- https://github.com/neovim/nvim-lspconfig/wiki/Snippets
         --     if cmp.visible() then
         --         cmp.select_next_item()
         --     elseif luasnip.expand_or_jumpable() then
@@ -119,7 +124,7 @@ cmp.setup({
     sources = cmp.config.sources({
         { name = 'luasnip' }, -- For luasnip users.
         -- { name = 'cmp_tabnine' },
-        { name = 'nvim_lsp', keyword_length = 2 },
+        { name = 'nvim_lsp'}, -- keyword_length = 2 
         { name = 'buffer' },
         -- { name = 'vsnip' }, -- For vsnip users.
         -- { name = 'ultisnips' }, -- For ultisnips users.
@@ -231,6 +236,8 @@ lspconfig.gopls.setup {
     },
 }
 
+require'lspconfig'.templ.setup{}
+
 --Enable (broadcasting) snippet capability for completion
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -261,7 +268,7 @@ require'lspconfig'.marksman.setup{
 
 require("luasnip.loaders.from_vscode").lazy_load({
 	include = nil, -- Load all languages
-	exclude = {'javascript', 'html', 'python'},
+	exclude = {'javascript', 'python'},
 })
 
 local null_ls = require("null-ls")
